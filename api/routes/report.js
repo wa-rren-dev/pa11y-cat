@@ -2,14 +2,24 @@ var express = require("express");
 const pa11y = require("pa11y");
 var router = express.Router();
 
-router.post("/", async function (req, res, next) {
-	const urls = req.body;
-	const results = await urls.map(async (item) => {
-		return await pa11y(item.url, {
-			rootElement: (item && item.rootelement) || "html",
-		});
+router.post("/", async function (req, res) {
+	getData(req.body).then((data) => {
+		res.send(data);
 	});
-	res.send(results);
 });
 
 module.exports = router;
+
+async function getPallyResult({ url, rootElement = "html" }) {
+	try {
+		return await pa11y(url, {
+			rootElement,
+		});
+	} catch (error) {
+		throw new Error(error);
+	}
+}
+
+async function getData(urls) {
+	return Promise.all(urls.map((item) => getPallyResult(item)));
+}
