@@ -3,6 +3,11 @@ const pa11y = require("pa11y");
 var router = express.Router();
 
 router.post("/", async function (req, res) {
+	if (!req.body.length) {
+		res.statusMessage = "Send some urls";
+		res.status(400).end();
+	}
+
 	getData(req.body).then((data) => {
 		res.send(data);
 	});
@@ -21,5 +26,9 @@ async function getPallyResult({ url, rootElement = "html" }) {
 }
 
 async function getData(urls) {
-	return Promise.all(urls.map((item) => getPallyResult(item)));
+	return await Promise.all(
+		urls.map((url) => {
+			return getPallyResult({ url });
+		})
+	);
 }

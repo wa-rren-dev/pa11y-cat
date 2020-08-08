@@ -1,35 +1,73 @@
-import React, { Component } from "react";
-import logo from "./logo.svg";
+import React, { Component, Fragment } from "react";
+
 import "./App.css";
 
 class App extends Component {
-    constructor(props) {
-        super(props);
-        this.state = { apiResponse: "" };
-    }
+	constructor() {
+		super();
+		this.state = {
+			results: [],
+			urlsToTest: "https://www.nice.org.uk\nhttps://cks.nice.org.uk",
+		};
+	}
 
-    callAPI() {
-        fetch("http://localhost:9000/report")
-            .then(res => res.text())
-            .then(res => this.setState({ apiResponse: res }))
-            .catch(err => err);
-    }
+	callAPI(url) {
+		fetch("http://localhost:9000/report", {
+			method: "POST",
+			body: JSON.stringify(url),
+			headers: {
+				Accept: "application/json",
+				"Content-Type": "application/json",
+			},
+		})
+			.then((res) => res.json())
+			.then((res) => this.setState({ results: res }))
+			.catch((err) => err);
+	}
 
-    componentDidMount() {
-        this.callAPI();
-    }
+	handleClick = () => {
+		const urls = this.state.urlsToTest.split("\n");
+		this.callAPI(urls);
+	};
 
-    render() {
-        return (
-            <div className="App">
-                <header className="App-header">
-                    <img src={logo} className="App-logo" alt="logo" />
-                    <h1 className="App-title">Welcome to React</h1>
-                </header>
-                
-            </div>
-        );
-    }
+	handleChange = (e) => {
+		this.setState({ urlsToTest: e.target.value });
+	};
+
+	render() {
+		return (
+			<div className="App">
+				<textarea
+					style={{ height: 300, width: 300 }}
+					onChange={this.handleChange}
+					value={this.state.urlsToTest}
+				/>
+				<hr />
+				<button onClick={this.handleClick}>Test</button>
+				<button onClick={() => this.setState({ urlsToTest: "" })}>Clear</button>
+				{this.state.results.length > 0 && (
+					<div>
+						<p>
+							<u>Results</u>
+							<div>
+								{this.state.results.map(({ documentTitle, pageUrl, issues }) => (
+									<Fragment>
+										<p>{documentTitle}</p>
+										<p>{pageUrl}</p>
+										<p>
+											{issues.length > 0
+												? `${issues.length} issues were found`
+												: "No issues found"}
+										</p>
+									</Fragment>
+								))}
+							</div>
+						</p>
+					</div>
+				)}
+			</div>
+		);
+	}
 }
 
 export default App;
