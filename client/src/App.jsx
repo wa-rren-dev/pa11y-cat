@@ -1,14 +1,12 @@
 import React, { Component } from "react";
 import { Result } from "./Result";
-import { Detail } from "./Detail";
 
 class App extends Component {
 	constructor() {
 		super();
 		this.state = {
 			urlsToTest:
-				// "https://www.nice.org.uk\nhttps://www.nice.org.uk/about\nhttps://www.nice.org.uk/about/who-we-are",
-				"https://cks.nice.org.uk",
+				"https://cks.nice.org.uk\nhttps://pathways.nice.org.uk\nhttps://www.nice.org.uk\nhttps://bnf.nice.org.uk",
 			request: [],
 			resultsDetail: null,
 		};
@@ -31,7 +29,7 @@ class App extends Component {
 
 	render() {
 		return (
-			<div className="container">
+			<div className="container-fluid">
 				<h1>pa11y-cat</h1>
 				<p className="lead">
 					Enter a set of URLs you'd like to run pa11y on, one per line.
@@ -56,34 +54,33 @@ class App extends Component {
 					</button>
 				</div>
 
-				<div className="row">
-					{this.state.request.length > 0 && (
-						<div className="col-8">
-							<h2>Results</h2>
-							<table className="table table-bordered table-striped">
-								<thead>
-									<tr>
-										<th>URL</th>
-										<th>Root</th>
-										<th>Doc Title</th>
-										<th>Errors</th>
-										<th>Warnings</th>
-										<th>Notices</th>
-									</tr>
-								</thead>
-								<tbody>
-									{this.state.request.map((request) => (
-										<Result
-											expandDetail={this.expandDetail}
-											key={request.url}
-											query={request}
-										/>
-									))}
-								</tbody>
-							</table>
-						</div>
-					)}
-				</div>
+				{this.state.request.length > 0 && (
+					<div className="col-8">
+						<table className="table table-bordered">
+							<caption>List of results for the supplied URLs</caption>
+							<thead>
+								<tr>
+									<th>URL</th>
+									<th>Root</th>
+									<th>Doc Title</th>
+									<th>Total Errors</th>
+									<th>Unique Errors</th>
+									<th>Total Warnings</th>
+									<th>Unique Warnings</th>
+								</tr>
+							</thead>
+							<tbody>
+								{this.state.request.map((request) => (
+									<Result
+										expandDetail={this.expandDetail}
+										key={request.url}
+										query={request}
+									/>
+								))}
+							</tbody>
+						</table>
+					</div>
+				)}
 			</div>
 		);
 	}

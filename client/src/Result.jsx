@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from "react";
 import { Detail } from "./Detail";
 import loading from "./loading.jpg";
-import s from "./Result.module.css";
+import s from "./result.module.css";
 
 export class Result extends Component {
 	constructor() {
@@ -29,12 +29,16 @@ export class Result extends Component {
 		return {
 			errors: issues.filter((issue) => issue.type === "error"),
 			warnings: issues.filter((issue) => issue.type === "warning"),
-			notices: issues.filter((issue) => issue.type === "notice"),
 		};
 	};
 
-	expandDetail = (issues, pageUrl, type) => {
-		this.setState({ resultsDetail: { issues, pageUrl, type } });
+	getUniqueIssues = (issues) => {
+		const messages = issues.map((item) => item.message);
+		return messages.filter((x, i, a) => a.indexOf(x) === i);
+	};
+
+	expandDetail = (issues, pageUrl, type, isUnique) => {
+		this.setState({ resultsDetail: { issues, pageUrl, type, isUnique } });
 	};
 
 	closeDetail = () => {
@@ -60,7 +64,7 @@ export class Result extends Component {
 			);
 		const { documentTitle, pageUrl, issues } = this.state.result;
 
-		const { errors, warnings, notices } = this.filterIssues(issues);
+		const { errors, warnings } = this.filterIssues(issues);
 
 		return (
 			<Fragment>
@@ -80,6 +84,16 @@ export class Result extends Component {
 							<b>{errors.length}</b>
 						</button>
 					</td>
+					<td className="bg-danger">
+						<button
+							className="btn btn-danger"
+							onClick={() =>
+								this.expandDetail(this.getUniqueIssues(errors), pageUrl, "errors", true)
+							}
+						>
+							<b>{this.getUniqueIssues(errors).length}</b>
+						</button>
+					</td>
 					<td className="bg-info">
 						<button
 							className="btn btn-info"
@@ -88,12 +102,19 @@ export class Result extends Component {
 							<b>{warnings.length}</b>
 						</button>
 					</td>
-					<td className="bg-success">
+					<td className="bg-info">
 						<button
-							className="btn btn-success"
-							onClick={() => this.expandDetail(notices, pageUrl, "notices")}
+							className="btn btn-info"
+							onClick={() =>
+								this.expandDetail(
+									this.getUniqueIssues(warnings),
+									pageUrl,
+									"warnings",
+									true
+								)
+							}
 						>
-							<b>{notices.length}</b>
+							<b>{this.getUniqueIssues(warnings).length}</b>
 						</button>
 					</td>
 				</tr>

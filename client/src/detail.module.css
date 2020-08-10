@@ -1,2 +1,15 @@
-.details {
+.detail {
+	margin-bottom: 0;
+}
+
+.caption {
+	color: black;
+}
+
+.preTag {
+	white-space: pre-wrap;
+}
+
+.tableHead {
+	width: 33%;
 }
