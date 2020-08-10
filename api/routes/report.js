@@ -16,6 +16,9 @@ router.post("/", async function (req, res) {
 async function getPallyResult({ url, rootElement }) {
 	try {
 		return await pa11y(url, {
+			chromeLaunchConfig: {
+				args: ["--no-sandbox"],
+			},
 			rootElement,
 			includeWarnings: true,
 		});
