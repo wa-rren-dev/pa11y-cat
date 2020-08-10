@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from "react";
 import { Detail } from "./Detail";
 import loading from "./loading.jpg";
-import s from "Result.module.css";
+import s from "./Result.module.css";
 
 export class Result extends Component {
 	constructor() {
@@ -12,7 +12,7 @@ export class Result extends Component {
 	callAPI(request) {
 		this.setState({ loaded: false });
 		this.setState({ result: null });
-		fetch("http://localhost:9000/report", {
+		fetch("/report", {
 			method: "POST",
 			body: JSON.stringify(request),
 			headers: {

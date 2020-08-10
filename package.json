@@ -4,16 +4,19 @@
 	"description": "- This repository has the code to support a tutorial that I created on Medium called Create a React FrontEnd, a Node/Express BackEnd and connect them together. - This repository can also be used as a starting point (boilerplate), if you whant to create your own React/Express app. .",
 	"main": "index.js",
 	"dependencies": {
-		"concurrently": "^5.3.0"
+		"concurrently": "^5.3.0",
+		"copyfiles": "^2.3.0"
 	},
 	"devDependencies": {},
 	"scripts": {
 		"client": "cd client && npm start",
 		"server": "cd api && nodemon index",
-		"start": "concurrently npm:client npm:server",
-		"postinstall": "concurrently npm:installclient npm:installApi",
-		"installclient": "cd client && npm ci",
-		"installApi": "cd api && npm ci"
+		"dev": "concurrently npm:client npm:server",
+		"start": "cd api && npm start",
+		"postinstall": "concurrently npm:build:client npm:build:api",
+		"build:client": "cd client && npm ci && npm run build",
+		"build:api": "cd api && npm ci",
+		"prestart": "copyfiles './client/build/**/*.*' './api/public' -u 2"
 	},
 	"keywords": [],
 	"author": "",
