@@ -18,7 +18,6 @@ async function getPallyResult({ url, rootElement }) {
 		return await pa11y(url, {
 			rootElement,
 			includeWarnings: true,
-			includeNotices: true,
 		});
 	} catch (error) {
 		throw new Error(error);

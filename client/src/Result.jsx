@@ -1,11 +1,12 @@
 import React, { Component, Fragment } from "react";
+import { Detail } from "./Detail";
 import loading from "./loading.jpg";
 import s from "./Result.module.css";
 
 export class Result extends Component {
 	constructor() {
 		super();
-		this.state = { result: {}, loaded: false };
+		this.state = { result: {}, loaded: false, resultsDetail: null };
 	}
 
 	callAPI(request) {
@@ -32,6 +33,14 @@ export class Result extends Component {
 		};
 	};
 
+	expandDetail = (issues, pageUrl, type) => {
+		this.setState({ resultsDetail: { issues, pageUrl, type } });
+	};
+
+	closeDetail = () => {
+		this.setState({ resultsDetail: null });
+	};
+
 	componentDidMount() {
 		this.callAPI(this.props.query);
 	}
@@ -40,7 +49,12 @@ export class Result extends Component {
 			return (
 				<tr className="table-info">
 					<td colSpan="7">
-						<img aria-label="Loading result" src={loading} className={s.loading} />
+						<img
+							aria-label="Loading result"
+							alt=""
+							src={loading}
+							className={s.loading}
+						/>
 					</td>
 				</tr>
 			);
@@ -51,16 +65,41 @@ export class Result extends Component {
 		return (
 			<Fragment>
 				<tr>
-					<td>{this.props.query.url}</td>
+					<td>
+						{this.props.query.url}
+						<br />
+						{this.props.query.url !== pageUrl && <small>Tested: {pageUrl}</small>}
+					</td>
 					<td>{this.props.query.rootElement}</td>
 					<td>{documentTitle}</td>
-					<td>{pageUrl}</td>
 					<td className="bg-danger">
-						<b>{errors.length}</b>
+						<button
+							className="btn btn-danger"
+							onClick={() => this.expandDetail(errors, pageUrl, "errors")}
+						>
+							<b>{errors.length}</b>
+						</button>
 					</td>
-					<td className="bg-info">{warnings.length}</td>
-					<td>{notices.length}</td>
+					<td className="bg-info">
+						<button
+							className="btn btn-info"
+							onClick={() => this.expandDetail(warnings, pageUrl, "warnings")}
+						>
+							<b>{warnings.length}</b>
+						</button>
+					</td>
+					<td className="bg-success">
+						<button
+							className="btn btn-success"
+							onClick={() => this.expandDetail(notices, pageUrl, "notices")}
+						>
+							<b>{notices.length}</b>
+						</button>
+					</td>
 				</tr>
+				{this.state.resultsDetail && (
+					<Detail close={this.closeDetail} {...this.state.resultsDetail} />
+				)}
 			</Fragment>
 		);
 	}
