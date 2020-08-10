@@ -7,18 +7,19 @@ class App extends Component {
 		this.state = {
 			urlsToTest:
 				"https://www.nice.org.uk\nhttps://cks.nice.org.uk\nhttps://pathways.nice.org.uk",
-			// "https://www.nice.org.uk",
 			request: [],
 		};
 	}
 
 	handleClick = (urls) => {
-		let formatted = [];
-		const splitUrls = urls.split("\n");
-		splitUrls.forEach((url) => {
-			formatted.push({ url: url, rootElement: "html" });
+		this.setState({ request: [] }, () => {
+			let formatted = [];
+			const splitUrls = urls.split("\n");
+			splitUrls.forEach((url) => {
+				formatted.push({ url: url, rootElement: "html" });
+			});
+			this.setState({ request: formatted });
 		});
-		this.setState({ request: formatted });
 	};
 
 	handleChange = (e) => {

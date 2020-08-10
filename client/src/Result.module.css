@@ -1,0 +1,11 @@
+.loading {
+	width: 60px;
+	border-radius: 50%;
+	animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+	100% {
+		transform: rotate(360deg);
+	}
+}
