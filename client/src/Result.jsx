@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from "react";
 import { Detail } from "./Detail";
 import loading from "./loading.jpg";
-import s from "./Result.module.css";
+import s from "./styles.module.css";
 
 export class Result extends Component {
 	constructor() {

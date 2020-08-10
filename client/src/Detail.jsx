@@ -1,5 +1,5 @@
 import React from "react";
-import s from "./Detail.module.css";
+import s from "./styles.module.css";
 
 const getStyle = (type) => {
 	if (type === "errors") return "bg-danger";
