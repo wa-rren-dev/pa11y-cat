@@ -10,7 +10,10 @@
 	"scripts": {
 		"client": "cd client && npm start",
 		"server": "cd api && nodemon index",
-		"start": "concurrently npm:client npm:server"
+		"start": "concurrently npm:client npm:server",
+		"postinstall": "concurrently npm:installclient npm:installApi",
+		"installclient": "cd client && npm ci",
+		"installApi": "cd api && npm ci"
 	},
 	"keywords": [],
 	"author": "",
