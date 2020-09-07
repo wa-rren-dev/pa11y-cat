@@ -1,7 +1,7 @@
 {
 	"name": "pa11y-cat",
 	"version": "1.0.0",
-	"description": "- This repository has the code to support a tutorial that I created on Medium called Create a React FrontEnd, a Node/Express BackEnd and connect them together. - This repository can also be used as a starting point (boilerplate), if you whant to create your own React/Express app. .",
+	"description": "",
 	"main": "index.js",
 	"dependencies": {
 		"concurrently": "^5.3.0",

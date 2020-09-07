@@ -62,7 +62,15 @@ export class Result extends Component {
 					</td>
 				</tr>
 			);
-		const { documentTitle, pageUrl, issues } = this.state.result;
+		debugger;
+		if (this.state.result.data.status === "error")
+			return (
+				<tr className="table-info">
+					<td colSpan="7">{this.state.result.data.message}</td>
+				</tr>
+			);
+
+		const { documentTitle, pageUrl, issues } = this.state.result.data;
 
 		const { errors, warnings } = this.filterIssues(issues);
 

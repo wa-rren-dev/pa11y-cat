@@ -19,7 +19,7 @@ export function Detail({ issues, pageUrl, type, close, isUnique }) {
 							</button>
 							<ul>
 								{issues.map((issue) => (
-									<li>{issue}</li>
+									<li key={issue}>{issue}</li>
 								))}
 							</ul>
 						</>
